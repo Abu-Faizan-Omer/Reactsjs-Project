@@ -21,4 +21,8 @@
 .heading{
   align-items: center;
   text-align: center;
+  background-color: aqua;
+}
+.form{
+  background-color: rgb(228, 219, 205);
 }
