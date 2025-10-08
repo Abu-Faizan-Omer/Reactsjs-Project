@@ -15,6 +15,10 @@ const Bus=()=>{
         //delete
         const [del,setDelete]=useState()
     
+        //Filter
+        const [filterBus, setFilterBus] = useState("All");
+
+
       const nameHandler=(event)=>{
         setName(event.target.value)
       }
@@ -32,6 +36,10 @@ const Bus=()=>{
         setLi(event.target.value)
         console.log("hello")
       }
+
+      const filterHandler = (event) => {
+        setFilterBus(event.target.value);
+     };
     
       const formSubmitHandler = (event) => {
   event.preventDefault();
@@ -78,6 +86,9 @@ const Bus=()=>{
         setLi(newList);
         };
 
+    const filteredList = filterBus === "All" ? litag : litag.filter(item =>item.bus===filterBus);
+
+
 
     return (
         <div>
@@ -85,7 +96,7 @@ const Bus=()=>{
           <h1>Bus_Booking System</h1>
         </div>
         <div>Filter   
-          <select name="" id="" >
+          <select value={filterBus} onChange={filterHandler} >
             <option value="All">All</option>
             <option value="Bus1">Bus1</option>
             <option value="Bus2">Bus2</option>
@@ -122,10 +133,9 @@ const Bus=()=>{
 
           <div className="list">
             <ul className="ul" onChange={liHandler}>
-              {litag.map((item,idx)=>{
-            
+              {filteredList.map((item,idx)=>{  
                 return (
-                  <li key={idx}>
+                  <li key={idx} className='litag'>
                     {item.name}--{item.email}--{item.phone}--{item.bus} 
                     <button onClick={()=>editHandler(idx)}>Edit</button>
                     <button onClick={()=>deleteHandler(idx)}>Delete</button>
