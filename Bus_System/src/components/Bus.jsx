@@ -3,12 +3,17 @@ import { useState } from 'react'
 import './Bus.css'
 const Bus=()=>{
 
-    const[nameEnter,setName]=useState()
-      const[emailEnter,setEmail]=useState()
-      const[phoneEnter,setPhone]=useState()
-      const[busEnter,setBus]=useState()
+    const[nameEnter,setName]=useState("")
+      const[emailEnter,setEmail]=useState("")
+      const[phoneEnter,setPhone]=useState("")
+      const[busEnter,setBus]=useState("All")
     
       const[litag,setLi]=useState([])
+
+      //Edit
+        const[edit,setEdit]=useState(null)
+        //delete
+        const [del,setDelete]=useState()
     
       const nameHandler=(event)=>{
         setName(event.target.value)
@@ -28,17 +33,48 @@ const Bus=()=>{
         console.log("hello")
       }
     
-      const formSubmitHandler=(event)=>{
-        event.preventDefault()
-        const data={
-          name:nameEnter,
-          email:emailEnter,
-          phone:phoneEnter,
-          bus:busEnter
-        }
-        console.log("data-" ,data)
-        setLi([...litag,data])
-      }
+      const formSubmitHandler = (event) => {
+  event.preventDefault();
+
+  const data = {
+    name: nameEnter,
+    email: emailEnter,
+    phone: phoneEnter,
+    bus: busEnter,
+  };
+
+  // Always just add new (updated or fresh) entry
+  setLi([...litag, data]);
+  setEdit(null);
+
+  // Clear fields
+  setName('');
+  setEmail('');
+  setPhone('');
+  setBus('All');
+};
+
+      //edit
+      const editHandler = (idx) => {
+  const selectedItem = litag[idx];
+
+  // Fill form
+  setName(selectedItem.name);
+  setEmail(selectedItem.email);
+  setPhone(selectedItem.phone);
+  setBus(selectedItem.bus);
+
+  // Remove item from list
+  const updatedList = litag.filter((item, i) => i !== idx);
+  setLi(updatedList);
+
+  // Enable edit mode
+  setEdit(true);
+};
+
+
+      
+
 
     return (
         <div>
@@ -57,18 +93,18 @@ const Bus=()=>{
 
         <form className="form" onSubmit={formSubmitHandler}>
         <div className="input">
-        Name:<input type="text" id="name"  placeholder="enter your name" 
+        Name:<input type="text" id="name" value={nameEnter} placeholder="enter your name" 
         onChange={nameHandler}/>
         <br /><br />
-        Email:<input type="email" id="email"  placeholder="enter your email"  
+        Email:<input type="email" id="email" value={emailEnter} placeholder="enter your email"  
         onChange={emailHandler}/>
         <br /><br />
-        Phone:<input type="number" id="phone" placeholder="enter your Phone number"  
+        Phone:<input type="number" id="phone" value={phoneEnter} placeholder="enter your Phone number"  
         onChange={phoneHandler}/>
            <br /><br />
         </div>  
         <div className="bus">Bus Number:
-           <select onChange={busHandler}>
+           <select onChange={busHandler} value={busEnter}>
             <option value="All">All</option>
             <option value="Bus1">Bus1</option>
             <option value="Bus2">Bus2</option>
@@ -88,6 +124,8 @@ const Bus=()=>{
                 return (
                   <li key={idx}>
                     {item.name}--{item.email}--{item.phone}--{item.bus} 
+                    <button onClick={()=>editHandler(idx)}>Edit</button>
+                    <button onClick={()=>deleteHandler(idx)}>Delete</button>
                     </li>
                 )
               })}
