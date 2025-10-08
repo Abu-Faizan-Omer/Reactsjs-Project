@@ -73,7 +73,10 @@ const Bus=()=>{
 };
 
 
-      
+      const deleteHandler = (idx) => {
+        const newList = litag.filter((item, i) => i !== idx);
+        setLi(newList);
+        };
 
 
     return (
